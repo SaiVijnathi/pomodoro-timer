@@ -61,14 +61,10 @@ export default function StudyCalendar() {
   });
 
   return (
-    <ImageBackground
-      source={require("../assets/background.png")}
-      style={styles.screen}
-      resizeMode="cover"
-    >
-    <View style={styles.overlay}>
-      <Text style={styles.headerTitle}>Calendar</Text>
-      <Text style={styles.headerSubtitle}>Plan your day, stay focused.</Text>
+    <View style={styles.screen}>
+      <View style={styles.container}>
+        <Text style={styles.headerTitle}>Calendar</Text>
+        <Text style={styles.headerSubtitle}>Plan your day, stay focused.</Text>
 
       <FlatList
         data={events[selectedDate] || []}
@@ -136,21 +132,24 @@ export default function StudyCalendar() {
         )}
       />
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    width: '100%',
   },
 
-   overlay: {
+  container: {
     flex: 1,
-    backgroundColor: "rgba(8,8,15,0.6)",
+    width: '100%',
+    maxWidth: 420,
+    alignSelf: 'center',
+    paddingTop: 44,
     paddingHorizontal: 20,
-    paddingBottom: 24,
-    paddingTop: 40,
+    paddingBottom: 16,
   },
 
   headerTitle: {

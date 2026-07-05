@@ -60,11 +60,7 @@ export default function Todos() {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/background.png')}
-      style={styles.screen}
-      resizeMode="cover"
-    >
+    <View style={styles.screen}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Tasks</Text>
@@ -110,22 +106,22 @@ export default function Todos() {
           ))}
         </ScrollView>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    width: '100%',
+    paddingTop: 44,
   },
   container: {
     flex: 1,
     width: '100%',
     maxWidth: 420,
     alignSelf: 'center',
-    paddingTop: 60,
     paddingHorizontal: 20,
-    backgroundColor: "rgba(8,8,15,0.6)",
   },
   header: {
     marginBottom: 16,
