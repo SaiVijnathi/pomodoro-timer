@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Background, BottomNavigation, Calendar, Todos } from '../components';
-import Timer from '../components/timer';
+import Timer from '../components/pomodoro';
 
 type TabKey = 'pomodoro' | 'todos' | 'calendar';
 
