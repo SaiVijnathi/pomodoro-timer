@@ -19,7 +19,7 @@ export default function Index() {
     }
 
     return (
-      <View style={styles.timerWrapper}>
+      <View style={[styles.timerWrapper, { transform: [{ translateY: -35 }] }]}>
         <Timer onTimerStateChange={setIsTimerRunning} />
       </View>
     );

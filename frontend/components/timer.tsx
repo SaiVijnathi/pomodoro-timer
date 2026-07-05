@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 type TimerMode = 'focus' | 'shortBreak' | 'longBreak';
 
@@ -126,23 +127,31 @@ export default function Timer({ onTimerStateChange }: { onTimerStateChange?: (is
         <View style={styles.textContainer}>
           <Text style={styles.time}>{formatTime(timeLeft)}</Text>
           <Text style={styles.label}>{label}</Text>
-          <Text style={styles.counter}>Pomodoros: {completedFocusSessions}</Text>
-        </View>
-      </View>
+          <View style={styles.iconRow}>
+          <Pressable onPress={resetTimer} style={styles.iconButton}>
+            <Ionicons name="refresh" size={22} color="white" />
+          </Pressable>
 
-      <View style={styles.controls}>
-        <Pressable
-          style={styles.primaryButton}
-          onPress={isRunning ? pauseTimer : startTimer}
-        >
-          <Text style={styles.buttonText}>{isRunning ? 'Pause' : 'Start'}</Text>
-        </Pressable>
-        <Pressable style={styles.secondaryButton} onPress={resetTimer}>
-          <Text style={styles.buttonText}>Reset</Text>
-        </Pressable>
-        <Pressable style={styles.secondaryButton} onPress={skipSession}>
-          <Text style={styles.buttonText}>Skip</Text>
-        </Pressable>
+          <Pressable
+            onPress={isRunning ? pauseTimer : startTimer}
+            style={[styles.iconButton, styles.playButton]}
+          >
+            <Ionicons
+              name={isRunning ? "pause" : "play"}
+              size={28}
+              color="#F5C26B"
+            />
+          </Pressable>
+
+          <Pressable onPress={skipSession} style={styles.iconButton}>
+            <Ionicons
+              name="play-skip-forward"
+              size={22}
+              color="white"
+            />
+          </Pressable>
+      </View>
+        </View>
       </View>
     </View>
   );
@@ -189,30 +198,35 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginTop: 6,
   },
-  counter: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 12,
-    marginTop: 8,
-  },
-  controls: {
-    flexDirection: 'row',
-  },
-  primaryButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 999,
-    marginHorizontal: 6,
-  },
-  secondaryButton: {
-    backgroundColor: 'rgba(255,255,255,0.12)',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 999,
-    marginHorizontal: 6,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '600',
-  },
+  
+  iconRow: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 22,
+},
+
+iconButton: {
+  width: 42,
+  height: 42,
+  borderRadius: 21,
+
+  alignItems: "center",
+  justifyContent: "center",
+
+  marginHorizontal: 10,
+
+  backgroundColor: "rgba(255,255,255,0.08)",
+},
+
+playButton: {
+  width: 56,
+  height: 56,
+  borderRadius: 28,
+
+  backgroundColor: "rgba(255,255,255,0.12)",
+
+  borderWidth: 1,
+  borderColor: "rgba(255,255,255,0.18)",
+},
 });
