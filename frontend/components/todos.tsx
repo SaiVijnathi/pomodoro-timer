@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 
 type TodoItem = {
   id: number;
@@ -60,133 +60,172 @@ export default function Todos() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Tasks</Text>
-        <Text style={styles.subtitle}>{completedCount}/{todos.length} done</Text>
-      </View>
+    <ImageBackground
+      source={require('../assets/background.png')}
+      style={styles.screen}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Tasks</Text>
+          <Text style={styles.subtitle}>{completedCount}/{todos.length} done</Text>
+        </View>
 
-      <View style={styles.inputRow}>
-        <TextInput
-          value={draft}
-          onChangeText={setDraft}
-          placeholder={editingId ? 'Edit your todo' : 'Add a todo'}
-          placeholderTextColor="rgba(255,255,255,0.55)"
-          style={styles.input}
-          onSubmitEditing={addOrUpdateTodo}
-        />
-        <Pressable style={styles.primaryButton} onPress={addOrUpdateTodo}>
-          <Text style={styles.buttonText}>{editingId ? 'Save' : 'Add'}</Text>
-        </Pressable>
-      </View>
+        <View style={styles.inputRow}>
+          <TextInput
+            value={draft}
+            onChangeText={setDraft}
+            placeholder={editingId ? 'Edit your todo' : 'Add a todo'}
+            placeholderTextColor="#8A8496"
+            style={styles.input}
+            onSubmitEditing={addOrUpdateTodo}
+          />
+          <Pressable style={styles.primaryButton} onPress={addOrUpdateTodo}>
+            <Text style={styles.buttonText}>{editingId ? 'Save' : 'Add'}</Text>
+          </Pressable>
+        </View>
 
-      <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
-        {todos.map((todo) => (
-          <View key={todo.id} style={styles.todoItem}>
-            <Pressable style={styles.checkButton} onPress={() => toggleTodo(todo.id)}>
-              <Text style={styles.checkIcon}>{todo.completed ? '✓' : '○'}</Text>
-            </Pressable>
-
-            <Pressable style={styles.todoTextWrapper} onPress={() => toggleTodo(todo.id)}>
-              <Text style={[styles.todoTitle, todo.completed && styles.completedTodo]}>{todo.title}</Text>
-            </Pressable>
-
-            <View style={styles.actions}>
-              <Pressable style={styles.iconButton} onPress={() => startEdit(todo)}>
-                <Text style={styles.iconText}>✎</Text>
+        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+          {todos.map((todo) => (
+            <View key={todo.id} style={styles.todoItem}>
+              <Pressable style={styles.checkBubble} onPress={() => toggleTodo(todo.id)}>
+                <Text style={[styles.checkIcon, todo.completed && styles.checkIconDone]}>
+                  {todo.completed ? '✓' : '○'}
+                </Text>
               </Pressable>
-              <Pressable style={styles.iconButton} onPress={() => deleteTodo(todo.id)}>
-                <Text style={styles.iconText}>✕</Text>
+
+              <Pressable style={styles.todoTextWrapper} onPress={() => toggleTodo(todo.id)}>
+                <Text style={[styles.todoTitle, todo.completed && styles.completedTodo]}>{todo.title}</Text>
               </Pressable>
+
+              <View style={styles.actions}>
+                <Pressable style={styles.iconButton} onPress={() => startEdit(todo)}>
+                  <Text style={styles.iconText}>✎</Text>
+                </Pressable>
+                <Pressable style={styles.iconButton} onPress={() => deleteTodo(todo.id)}>
+                  <Text style={styles.deleteText}>✕</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+          ))}
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   container: {
+    flex: 1,
     width: '100%',
     maxWidth: 420,
-    flex: 1,
+    alignSelf: 'center',
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    backgroundColor: "rgba(8,8,15,0.6)",
   },
   header: {
     marginBottom: 16,
   },
   title: {
-    color: 'white',
-    fontSize: 24,
+    color: '#F7E8D5',
+    fontSize: 28,
     fontWeight: '700',
   },
   subtitle: {
-    color: 'rgba(255,255,255,0.7)',
+    color: '#D9B98C',
     marginTop: 4,
+    fontSize: 14,
   },
   inputRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginBottom: 16,
+    gap: 10,
+    marginBottom: 18,
   },
   input: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.14)',
-    borderColor: 'rgba(255,255,255,0.24)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(255,255,255,0.12)',
     borderWidth: 1,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    color: 'white',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    color: '#F8F2EA',
+    fontSize: 15,
   },
   primaryButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 14,
-    paddingHorizontal: 14,
+    backgroundColor: '#C88942',
+    borderRadius: 16,
+    paddingHorizontal: 18,
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 4,
   },
   buttonText: {
     color: 'white',
     fontWeight: '700',
+    fontSize: 14,
   },
   list: {
-    gap: 10,
+    gap: 12,
     paddingBottom: 16,
   },
   todoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.14)',
-    borderRadius: 16,
-    padding: 12,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    padding: 14,
   },
-  checkButton: {
-    marginRight: 10,
+  checkBubble: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
   },
   checkIcon: {
-    color: 'white',
-    fontSize: 18,
+    color: '#D9B98C',
+    fontSize: 16,
+  },
+  checkIconDone: {
+    color: '#F0C674',
   },
   todoTextWrapper: {
     flex: 1,
   },
   todoTitle: {
-    color: 'white',
-    fontSize: 15,
+    color: '#F6EEE5',
+    fontSize: 16,
+    fontWeight: '600',
   },
   completedTodo: {
     textDecorationLine: 'line-through',
-    color: 'rgba(255,255,255,0.65)',
+    color: '#8A8496',
+    fontWeight: '400',
   },
   actions: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
   },
   iconButton: {
-    padding: 4,
+    padding: 6,
   },
   iconText: {
-    color: 'white',
+    color: '#D9B98C',
+    fontSize: 15,
+  },
+  deleteText: {
+    color: '#F3B7A3',
     fontSize: 16,
   },
 });
